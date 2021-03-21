@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "689651300645",
+    "firebase_url": "https://fireabsetest-5e0f0-default-rtdb.firebaseio.com",
+    "project_id": "fireabsetest-5e0f0",
+    "storage_bucket": "fireabsetest-5e0f0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689651300645:android:301e2c3d10eb6f5a1302cc",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.FirebaseTester"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "689651300645-k7na0a5o28cgdke6lee1nlc2uthgt61r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC95jvr65GNxVMu00mBbxWLNhmoEqyITGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "689651300645-k7na0a5o28cgdke6lee1nlc2uthgt61r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

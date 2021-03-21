@@ -434,7 +434,6 @@ FodyWeavers.xsd
 
 # End of https://www.toptal.com/developers/gitignore/api/unity,firebase,visualstudio
 
-
 /[Aa]ssets/Editor Default Resources/
 /[Aa]ssets/ExternalDependencyManager/
 /[Aa]ssets/Firebase/
