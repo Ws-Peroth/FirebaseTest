@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
         UidKey defaultkey = new UidKey("99999999");
         string defaultkeyjson = JsonUtility.ToJson(defaultkey);
 
-        reference.GetValueAsync().ContinueWith(task =>
+        lock(reference.GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -49,8 +49,7 @@ public class GameManager : MonoBehaviour
                 {
                     Debug.Log("Defualt DB is Exists");
                     InputData(
-                        MakeUserData(), 
-                        UpdateKeyCode( GetRecentKeycode(snapshot) )
+                        MakeUserData(), UpdateKeyCode(GetRecentKeycode(snapshot))
                     );
                 }
                 else
@@ -64,7 +63,7 @@ public class GameManager : MonoBehaviour
             }
             else
                 Debug.Log("Get Value ERROR");
-        });
+        }))
 
         return startKeyCode;
 
@@ -87,17 +86,31 @@ public class GameManager : MonoBehaviour
         return bigInteger + 1;
     }
 
-    public BigInteger GetRecentKeycode(DataSnapshot snapshot)
+    public BigInteger GetRecentKeycode(DataSnapshot snapshot2)
     {
         Printlog(nameof(GetRecentKeycode));
         BigInteger startKeyCode;
 
-        foreach (DataSnapshot uidkeycode in snapshot.Children)
+        reference = FirebaseDatabase.DefaultInstance.GetReference("UID");
+
+        lock (reference.GetValueAsync().ContinueWith(task =>
         {
-            UidKey dataDictionary = (UidKey)uidkeycode.Value;
-            startKeyCode = BigInteger.Parse(dataDictionary.uidKey);
-            Debug.Log("Keycode Setting Finish\nKeycode : " + startKeyCode);
-        }
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+
+                foreach (DataSnapshot uidkeycode in snapshot.Children)
+                {
+                    UidKey dataDictionary = (UidKey)uidkeycode.Value;
+                    startKeyCode = BigInteger.Parse(dataDictionary.uidKey);
+                    Debug.Log("Keycode Setting Finish\nKeycode : " + startKeyCode);
+                }
+
+            }
+            else
+                Debug.Log("Get Value ERROR");
+
+        }))
 
         return startKeyCode;
 
@@ -105,6 +118,7 @@ public class GameManager : MonoBehaviour
 
     public void InputData(User rank, BigInteger setKeyCode)
     {
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
         Printlog(nameof(InputData));
         UidKey updateKey = new UidKey(setKeyCode.ToString());
         string updateKeyJson = JsonUtility.ToJson(updateKey);
