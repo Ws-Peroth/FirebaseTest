@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
 
         reference = FirebaseDatabase.DefaultInstance.GetReference("UID");
 
-        lock (reference.GetValueAsync().ContinueWith(task =>
+        lock(reference.GetValueAsync().ContinueWith(task =>
         {
             if (task.IsCompleted)
             {
@@ -111,7 +111,9 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Get Value ERROR");
 
         }))
-
+        {
+           
+        }
         return startKeyCode;
 
     }

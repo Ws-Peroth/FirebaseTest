@@ -71,6 +71,7 @@ public class DBIO : MonoBehaviour
             UidInit uidInit = new UidInit(BigInteger.Parse("99999999"));
             string uidjson = JsonUtility.ToJson(uidInit);
 
+
             reference.Child("UID").SetRawJsonValueAsync(uidjson).ContinueWith(task =>
             {
                 if (task.IsCompleted)
@@ -133,8 +134,6 @@ public class DBIO : MonoBehaviour
 
 
 }
-
-
 
 class Player
 {
