@@ -11,13 +11,14 @@ using System.Threading.Tasks;
 
 public class UIDGet : MonoBehaviour
 {
-    public DatabaseReference Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("UID").Reference;
+    public DatabaseReference Reference;
     public static UIDGet uidGetter;
     // Start is called before the first frame update
 
     void Start()
     {
-        if(uidGetter == null)
+        Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("UID").Reference;
+        if (uidGetter == null)
         {
             uidGetter = this;
         }

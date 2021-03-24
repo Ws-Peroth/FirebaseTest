@@ -14,8 +14,8 @@ public class DBUsersGet : MonoBehaviour
 {
     public static DBUsersGet userGetter;
 
-    public List<User> users;
-    public DatabaseReference Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("Users").Reference;
+    public List<DBUserData> users;
+    public DatabaseReference Reference;
 
     private void Start()
     {
@@ -23,20 +23,48 @@ public class DBUsersGet : MonoBehaviour
         {
             userGetter = this;
         }
+        Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("Users").Reference;
     }
+
+    public int UserDbExistsCheck()
+    {
+        int flag = -2;
+
+        lock (userGetter)
+        {
+            Reference.GetValueAsync().ContinueWith(task => {
+                if (task.IsCompleted)
+                {
+                    DataSnapshot result = task.Result;
+                    if (result.ChildrenCount <= 0) flag = 0;
+                    else flag = 1;
+                }
+                else
+                {
+                    flag = -1;
+                }
+            });
+        }
+        {
+            Debug.Log("lock On : User DB Is Exists");
+        }
+        Debug.Log("User DB Is Exists flag = " + flag);
+        return flag;
+    }
+
 
     void AddUserData(DataSnapshot snapshot)
     {
         foreach (DataSnapshot userDataSnapshot in snapshot.Children)
         {
-            User userData = (User)userDataSnapshot.Value;
+            DBUserData userData = (DBUserData)userDataSnapshot.Value;
             users.Add(userData);
         }
     }
 
-    public List<User> GetUsers()
+    public List<DBUserData> GetUsers()
     {
-        users = new List<User>();
+        users = new List<DBUserData>();
 
         lock (userGetter)
         {

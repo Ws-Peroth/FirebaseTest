@@ -13,11 +13,12 @@ public class DBUsersSet : MonoBehaviour
 {
     public static DBUsersSet userSetter;
 
-    public DatabaseReference Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("Users").Reference;
+    public DatabaseReference Reference;
     // Start is called before the first frame update
     void Start()
     {
-        if(userSetter == null)
+        Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("Users").Reference;
+        if (userSetter == null)
         {
             userSetter = this;
         }

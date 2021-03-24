@@ -16,6 +16,17 @@ public class UIDManager : MonoBehaviour
         }
     }
 
+    public bool InitUidDB()
+    {
+        if (!UidDatabaseState())
+        {
+            FixUid(100000000);
+            return true; // Init 완료
+        }
+
+        return false; // 이미 Init되어있음
+    }
+
     public bool UidDatabaseState()
     {
         int state = UIDGet.uidGetter.UidDbExistsCheck();

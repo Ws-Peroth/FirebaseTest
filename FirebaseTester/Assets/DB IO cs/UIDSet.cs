@@ -11,11 +11,12 @@ using System.Threading.Tasks;
 
 public class UIDSet : MonoBehaviour
 {
-    public DatabaseReference Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("UID").Reference;
+    public DatabaseReference Reference;
     public static UIDSet uidSetter;
 
     void Start()
     {
+        Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("UID").Reference;
         if (uidSetter == null)
         {
             uidSetter = this;
