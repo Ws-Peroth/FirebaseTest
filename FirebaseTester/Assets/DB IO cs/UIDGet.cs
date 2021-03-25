@@ -26,6 +26,7 @@ public class UIDGet : MonoBehaviour
 
     public int UidDbExistsCheck()
     {
+        print(nameof(UidDbExistsCheck));
         int flag = -2;
 
         lock (uidGetter)

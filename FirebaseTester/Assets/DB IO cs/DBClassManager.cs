@@ -23,14 +23,21 @@ public class DBClassManager : MonoBehaviour
 
     public void MakeUserButtonDown()
     {
+        print(nameof(MakeUserButtonDown));
+
         int uid = SetUid();
+
         System.Random random = new System.Random();
+
         DBUserData user = UserManager.userManager.CreatUser("TestUser", random.Next(0, 101), uid);
+
         UserManager.userManager.InputUserToDB(user, uid);
     }
 
     private int SetUid()
     {
+        print(nameof(SetUid));
+
         if (!UIDManager.uidManager.InitUidDB())
         {
             return UIDManager.uidManager.GetNowUid();
@@ -43,14 +50,15 @@ public class DBClassManager : MonoBehaviour
 
     public void GetUserButtonDown()
     {
-
-        List<DBUserData> users = UserManager.userManager.GetUserList();
-
-        for(int i = 0; i < users.Count; i++)
+        if (UserManager.userManager.UserDatabaseState())
         {
-            Debug.Log("UID : " + users[i].uid + "\nName : " + users[i].name + "\nPoint : " + users[i].point);
-        }
+            List<DBUserData> users = UserManager.userManager.GetUserList();
 
+            for (int i = 0; i < users.Count; i++)
+            {
+                Debug.Log("UID : " + users[i].uid + "\nName : " + users[i].name + "\nPoint : " + users[i].point);
+            }
+        }
     }
 
 }

@@ -18,6 +18,8 @@ public class UIDManager : MonoBehaviour
 
     public bool InitUidDB()
     {
+        print(nameof(InitUidDB));
+
         if (!UidDatabaseState())
         {
             FixUid(100000000);
