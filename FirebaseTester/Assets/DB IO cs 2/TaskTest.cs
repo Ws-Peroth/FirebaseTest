@@ -12,40 +12,31 @@ using System.Threading.Tasks;
 
 public class TaskTest : MonoBehaviour
 {
-    public void Start()
+    public void TaskStart()
     {
         Debug.Log("Call Start");
-        var task1 = new Task<BigInteger>(() => this.Calculate(5));
+        Task<int> task = new Task<int>(() => this.TaskProcess(5));
 
-        task1.Start();  // 다른 쓰레드에서 task1 실행
+        task.Start();  // 다른 스레드에서 task 실행
 
         print("대기중");
 
-        task1.Wait();   // task1이 종료될때까지 대기
+        task.Wait();   // task가 종료될때까지 대기]
 
-        Debug.Log("Task1 : " + task1.Result);
+        Debug.Log("task Result = " + task.Result);
     }
 
-
-    public BigInteger Calculate(int p)
+    public int TaskProcess(int countNumer)
     {
-        print("call Calculate");
-        if (p <= 0)
+        print("start Process");
+
+        for(int i = 0; i <= countNumer; i++)
         {
-            throw new InvalidOperationException("Can not calculate by input data.");
+            print("Count : " + i);  // 0 부터 countNumer까지 수를 출력하는 프로그램
         }
 
-        BigInteger n = 1;
-
-        for (var i = 1; i <= p; i++)
-        {
-            n *= i;
-            print("Calc n = " + n);
-            Thread.Sleep(500);
-        }
-        print("Calc End");
-        return n;
+        print("End Process");
+        return countNumer;
     }
-
 }
 
