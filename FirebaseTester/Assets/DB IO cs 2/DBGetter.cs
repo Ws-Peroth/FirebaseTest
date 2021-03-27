@@ -11,13 +11,18 @@ using System.Threading.Tasks;
 
 public class DBGetter : MonoBehaviour
 {
-    public DBUser user;
-    public DatabaseReference Reference;
+    DBUser user;
+    DatabaseReference Reference;
+
+    public delegate Task<DataSnapshot> FlagCheck();
+
+    public void Start()
+    {
+        Reference = FirebaseDatabase.DefaultInstance.RootReference.Reference;
+    }
 
     public void OnSignal()
     {
-        Reference = FirebaseDatabase.DefaultInstance.RootReference.Reference;
-
         Task<bool> task = new Task<bool>( () => Flag());
 
         task.Start();
@@ -69,10 +74,11 @@ public class DBGetter : MonoBehaviour
     {
         int flag = -2;
 
-        Task<DataSnapshot> callData = GetDataAsync();
+        //Task<DataSnapshot> callData = GetDataAsync();
 
-        Debug.Log("Wait . . .");
-        callData.Wait();
+        FlagCheck check = new FlagCheck(GetDataAsync);
+
+        Task<DataSnapshot> callData = check();
 
         if (callData.IsCompleted)
         {
@@ -86,7 +92,8 @@ public class DBGetter : MonoBehaviour
                 flag = 0; print("flag = 0");
             }
         }
-        else{
+        else
+        {
             flag = -1;
         }
 
@@ -99,8 +106,11 @@ public class DBGetter : MonoBehaviour
     private async Task<DataSnapshot> GetDataAsync()
     {
         DataSnapshot data = await Reference.Child("Users").GetValueAsync();
-        
+        Debug.Log(data.ChildrenCount);
         return data;
     }
+
+
+
 
 }
