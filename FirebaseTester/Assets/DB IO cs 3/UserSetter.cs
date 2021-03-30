@@ -14,25 +14,41 @@ public class UserSetter : MonoBehaviour
 
     private void Start()
     {
-        Reference = FirebaseDatabase.DefaultInstance.RootReference.Reference;
+        Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("Users").Reference;
 
     }
 
     public void SetterOn()
     {
-        MakeUser();
+        UserInputDB();
     }
-
-
-    UserDB MakeUser()
+    string MakeUser()
     {
         int point, x, y;
         System.Random random = new System.Random();
         point = random.Next(0, 101);
         x = random.Next(0, 101);
         y = random.Next(0, 101);
+        print("point : " + point);
+        print("x : " + x);
+        print("y : " + y);
+
+
+
         UserDB user = new UserDB(point, x, y);
-        return user;
+        string userJson = JsonUtility.ToJson(user);
+        return userJson;
     }
-    
+
+    public void UserInputDB()
+    {
+        BigInteger uid = UserIDDB.userUidManager.RequestRecentUid();
+        if (uid == 0) { print("Uid Get Error"); return; }
+        else { print("Get Uid Complete"); }
+
+        string userJson = MakeUser();
+        print("uid = " + uid);
+        print("user data" + userJson);
+        Reference.Child(uid.ToString()).SetRawJsonValueAsync(userJson);
+    }
 }

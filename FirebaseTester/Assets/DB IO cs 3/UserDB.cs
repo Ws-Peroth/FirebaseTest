@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UserDB : MonoBehaviour
+public class UserDB
 {
-    int point { get; set; }
-    int x { get; set; }
-    int y { get; set; }
+    public int point;
+    public int x;
+    public int y;
 
     public UserDB(int point, int x,int y)
     {

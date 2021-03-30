@@ -15,7 +15,7 @@ public class UserIDDB : MonoBehaviour
     DataSnapshot getDatabase;
     BigInteger uid;
     int uidFlag;
-
+    bool isGetResentUidCouroutineIsRunning;
     private void Start()
     {
         if (userUidManager == null)
@@ -129,7 +129,54 @@ public class UserIDDB : MonoBehaviour
                 "( -2 <= uidFlag <= 1 ) : " + uidFlag + "\n\n" +
                 "UserIDDB.cs : " + nameof(UidReSettingCouroutine)
                 );
+        yield break;
+    }
 
+    public BigInteger RequestRecentUid()
+    {
+        if (!isGetResentUidCouroutineIsRunning)
+        {
+            BigInteger returnUid = uid++;
+            uidFlag = -2;
+            isGetResentUidCouroutineIsRunning = true;
+            StartCoroutine(nameof(UpdateUidCouroutine));
+            return returnUid;
+        }
+        return 0;
+    }
+
+    public void UpdateUid()
+    {
+        uidFlag = -2;
+        Reference.SetValueAsync(uid.ToString()).ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+                uidFlag = 1;
+            else
+                uidFlag = -1;
+        });
+    }
+
+    IEnumerator UpdateUidCouroutine()
+    {
+        UpdateUid();
+        while (uidFlag == -2)
+        {
+            yield return null;
+        }
+        if (uidFlag == 1)
+            print("Update Uid Complete");
+
+        else if (uidFlag == -1)
+            print("Uid Update task is not complete");
+
+        else if (uidFlag != 0)
+            print("::ERROR::\n" +
+                "uidFlag is out of range " +
+                "( -2 <= uidFlag <= 1 ) : " + uidFlag + "\n\n" +
+                "UserIDDB.cs : " + nameof(UpdateUidCouroutine)
+                );
+        isGetResentUidCouroutineIsRunning = false;
         yield break;
     }
 }
