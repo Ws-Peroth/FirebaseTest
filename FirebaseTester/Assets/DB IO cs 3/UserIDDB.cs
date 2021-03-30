@@ -32,10 +32,10 @@ public class UserIDDB : MonoBehaviour
 
     public void InitializeUid()
     {
-        StartCoroutine(nameof(GetUid));
+        StartCoroutine(nameof(InitializeUidCouroutine));
     }
 
-    IEnumerator GetUid()
+    IEnumerator InitializeUidCouroutine()
     {
         UidGetter();
 
@@ -51,21 +51,20 @@ public class UserIDDB : MonoBehaviour
         else if (uidFlag == 0)
         {
             print("uid is null");
-            StartCoroutine(nameof(InitUID));
+            StartCoroutine(nameof(UidReSettingCouroutine));
             uid = 100000000;
         }
         else if (uidFlag == 1)
         {
             print("uid is exixts");
-            BigInteger i = BigInteger.Parse(getDatabase.Value.ToString());
-            uid = i;
+            uid = BigInteger.Parse(getDatabase.Value.ToString());
         }
         else
         {
             print("::ERROR::\n" +
                 "uidFlag is out of range " +
                 "( -2 <= uidFlag <= 1 ) : " + uidFlag + "\n\n" +
-                "UserIDDB.cs : " + nameof(GetUid)
+                "UserIDDB.cs : " + nameof(InitializeUidCouroutine)
                 );
         }
 
@@ -98,11 +97,11 @@ public class UserIDDB : MonoBehaviour
         });
     }
 
-    public void UidInit()
+    public void UidReSetting()
     {
         uidFlag = -2;
         uid = 100000000;
-        Reference.SetValueAsync(uid).ContinueWith(task =>
+        Reference.SetValueAsync(uid.ToString()).ContinueWith(task =>
         {
             if (task.IsCompleted)
                 uidFlag = 1;
@@ -111,9 +110,9 @@ public class UserIDDB : MonoBehaviour
         });
     }
 
-    IEnumerator InitUID()
+    IEnumerator UidReSettingCouroutine()
     {
-        UidInit();
+        UidReSetting();
 
         while (uidFlag == -2)
             yield return null;
@@ -128,7 +127,7 @@ public class UserIDDB : MonoBehaviour
             print("::ERROR::\n" +
                 "uidFlag is out of range " +
                 "( -2 <= uidFlag <= 1 ) : " + uidFlag + "\n\n" +
-                "UserIDDB.cs : " + nameof(InitUID)
+                "UserIDDB.cs : " + nameof(UidReSettingCouroutine)
                 );
 
         yield break;
