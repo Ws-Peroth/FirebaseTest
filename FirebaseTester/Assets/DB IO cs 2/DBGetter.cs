@@ -23,7 +23,7 @@ public class DBGetter : MonoBehaviour
 
     public void OnSignal()
     {
-        Task<bool> task = new Task<bool>( () => Flag());
+        Task<bool> task = new Task<bool>(() => Flag());
 
         task.Start();
         Debug.Log("Func Start");
@@ -32,43 +32,6 @@ public class DBGetter : MonoBehaviour
         print(task.Result ? "Return True" : "Return False");
 
     }
-
-    /*public bool IsUserDbExist()
-    {
-        print("Call Function : " + nameof(IsUserDbExist));
-
-        int flag = -2;
-
-        lock (this)
-        {
-            Reference.Child("Users").GetValueAsync().ContinueWith(task =>
-           {
-               if (task.IsCompleted)
-               {
-                   if (task.Result.ChildrenCount > 0)
-                   {
-                       flag = 1;
-                       print("flag = 1");
-                   }
-                   else
-                   {
-                       flag = 0; print("flag = 0");
-                   }
-               }
-               else
-               {
-                   flag = -1; print("flag = -1");
-               }
-           });
-        };
-
-        Debug.Log("UID DB Is Exists flag = " + flag);
-
-        if (flag == 1) return true;
-        return false;
-
-    }*/
-
 
     public bool Flag()
     {
@@ -100,7 +63,6 @@ public class DBGetter : MonoBehaviour
         Debug.Log("flag = " + flag);
         if (flag == 1) return true;
         return false;
-
     }
 
     private async Task<DataSnapshot> GetDataAsync()
