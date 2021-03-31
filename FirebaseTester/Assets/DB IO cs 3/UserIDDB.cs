@@ -23,7 +23,7 @@ public class UserIDDB : MonoBehaviour
             userUidManager = this;
         }
 
-        Reference = FirebaseDatabase.DefaultInstance.RootReference.Reference.Child("Uid");
+        Reference = FirebaseDatabase.DefaultInstance.RootReference.Child("Uid").Reference;
 
         uidFlag = -2;
 
@@ -57,6 +57,8 @@ public class UserIDDB : MonoBehaviour
         else if (uidFlag == 1)
         {
             print("uid is exixts");
+            int a  = int.Parse( getDatabase.Value.ToString());
+            print(a);
             uid = BigInteger.Parse(getDatabase.Value.ToString());
         }
         else
